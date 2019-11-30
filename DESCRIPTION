@@ -1,0 +1,22 @@
+Package: youngtool
+Type: Package
+Title: Research tools for academic writing
+Version: 0.1.0
+Author: person("Young-geun", "Kim", email = "dudrmshub@gmail.com", role = c("aut", "cre"))
+Maintainer: Young-geun Kim <dudrms33@g.skku.edu>
+Description: Reasearch tools that Young-geun uses
+    This package has many functions when writing academic works.
+License: MIT + file LICENSE
+URL: https://github.com/ygeunkim
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    dplyr,
+    data.table,
+    magrittr,
+    rlang
+Suggests: 
+    microbenchmark,
+    ggplot2,
+    devtools
+RoxygenNote: 7.0.1
