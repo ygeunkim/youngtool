@@ -37,7 +37,6 @@
 #' Optimism is the difference between the insample error and the training error.
 #' @references Hastie, T., Tibshirani, R.,, Friedman, J. (2001). \emph{The Elements of Statistical Learning}. New York, NY, USA: Springer New York Inc..
 #' @import data.table
-#' @importFrom dplyr pull
 #' @export
 compute_insample <- function(data, ny, fit, rand, mod, formula, ...) {
   if (!("y" %in% names(data))) data <- gen_y(data, fit, rand, fit_col = FALSE)
