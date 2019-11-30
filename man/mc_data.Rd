@@ -7,7 +7,7 @@
 mc_data(rand, N = 100, M = 1000, char = "s", ...)
 }
 \arguments{
-\item{rand}{Random sample gerator function with parameter n}
+\item{rand}{Random sample generator function with parameter n}
 
 \item{N}{Sample size in each MC sample}
 
