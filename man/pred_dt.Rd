@@ -4,14 +4,14 @@
 \alias{pred_dt}
 \title{Train and Predict a Model in each MC Sample}
 \usage{
-pred_dt(mod, formula, data, ...)
+pred_dt(data, mod, formula, ...)
 }
 \arguments{
+\item{data}{MC data set form of \code{\link{mc_data}}.}
+
 \item{mod}{Model function.}
 
 \item{formula}{an object of class \link[stats]{formula}.}
-
-\item{data}{MC data set form of \code{\link{mc_data}}.}
 
 \item{...}{Additional arguments for \code{mod}}
 }
