@@ -18,5 +18,6 @@ Imports:
 Suggests: 
     microbenchmark,
     ggplot2,
-    devtools
+    devtools,
+    covr
 RoxygenNote: 7.0.1

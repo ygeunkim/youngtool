@@ -3,6 +3,8 @@
 
 [![Build
 Status](https://travis-ci.org/ygeunkim/youngtool.svg?branch=master)](https://travis-ci.org/ygeunkim/youngtool)
+[![Codecov test
+coverage](https://codecov.io/gh/ygeunkim/youngtool/branch/master/graph/badge.svg)](https://codecov.io/gh/ygeunkim/youngtool?branch=master)
 
 This package has many functions when writing academic works.
 
