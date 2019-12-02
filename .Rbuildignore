@@ -5,3 +5,4 @@ README\.Rmd
 README\.md
 README_files
 epex\.png
+^\.travis\.yml$
