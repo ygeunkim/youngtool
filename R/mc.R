@@ -67,6 +67,7 @@ gen_y <- function(data, fit, rand, fit_col = TRUE, ...) {
 #' Some model functions require \code{x} and \code{y}, so I will add that feature.
 #' @import data.table
 #' @importFrom rlang enquo
+#' @importFrom stats predict
 #' @export
 pred_dt <- function(data, mod, formula, ...) {
   formul <- enquo(formula)
