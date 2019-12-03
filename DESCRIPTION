@@ -19,5 +19,6 @@ Suggests:
     microbenchmark,
     ggplot2,
     devtools,
-    covr
+    covr,
+    testthat
 RoxygenNote: 7.0.1
