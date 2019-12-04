@@ -1,5 +1,5 @@
 
-# `youngtool`
+# youngtool <a href='https://github.com/ygeunkim/youngtool'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 [![Build
 Status](https://travis-ci.org/ygeunkim/youngtool.svg?branch=master)](https://travis-ci.org/ygeunkim/youngtool)
