@@ -12,12 +12,13 @@
 #' @details
 #' This function prepares for \code{data.table} group operation.
 #' By grouping \code{mc} column, MC simulation can be easily done.
+#' @import data.table
 #' @export
 mc_data <- function(rand, N = 100, M = 1000, char = "s", ...) {
-  data.table::data.table(
-    x = rand(n = N * M, ...),
-    mc = gl(M, k = N, labels = paste0(char, 1:M))
-  )
+  data.table(mc = gl(M, k = N, labels = paste0(char, 1:M))) %>%
+    .[,
+      x := rand(n = N, ...),
+      by = mc]
 }
 
 #' Generate Response
