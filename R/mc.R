@@ -12,7 +12,6 @@
 #' @details
 #' This function prepares for \code{data.table} group operation.
 #' By grouping \code{mc} column, MC simulation can be easily done.
-#' @import data.table
 #' @export
 mc_data <- function(rand, N = 100, M = 1000, char = "s", ...) {
   data.table(mc = gl(M, k = N, labels = paste0(char, 1:M))) %>%
@@ -32,7 +31,6 @@ mc_data <- function(rand, N = 100, M = 1000, char = "s", ...) {
 #' @param ... additional arguments for \code{rand}
 #' @return
 #' Add two columns named \code{fx}, a true function value and \code{y}, error added.
-#' @import data.table
 #' @export
 gen_y <- function(data, fit, rand, fit_col = TRUE, ...) {
   data <-
@@ -66,7 +64,6 @@ gen_y <- function(data, fit, rand, fit_col = TRUE, ...) {
 #' It uses predict.mod() function. Some class has an option called \code{type}. For example, \link[stats]{predict.glm}.
 #' This function uses \code{type = "response"}.
 #' Some model functions require \code{x} and \code{y}, so I will add that feature.
-#' @import data.table
 #' @importFrom rlang enquo
 #' @importFrom stats predict
 #' @export

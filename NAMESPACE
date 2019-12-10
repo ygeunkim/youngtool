@@ -2,8 +2,10 @@
 
 export("%>%")
 export("%m%")
+export(compute_epe)
 export(compute_insample)
 export(gen_y)
+export(loss)
 export(mc_data)
 export(pred_dt)
 import(data.table)

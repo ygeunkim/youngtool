@@ -10,6 +10,7 @@ test_that(
       5,
       function(x) {1 + 3 * x},
       rnorm,
+      "squared",
       lm,
       y ~ x
     )
