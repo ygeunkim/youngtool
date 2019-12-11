@@ -6,16 +6,16 @@ test_that(
     mc_sample <- mc_data(rnorm, 10, 50)
     # y = 1 + 3 * x + eps
     epe <- compute_epe(
-      mc_sample,
-      rnorm,
-      5,
-      function(x) {1 + 3 * x},
-      rnorm,
-      "mc", "x", "y",
-      "squared",
+      data = mc_sample,
+      randx = rnorm,
+      testn = 5,
+      fit = function(x) {1 + 3 * x},
+      randy = rnorm,
+      mcname = "mc", xname = "x", yname = "y",
+      error = "squared",
       distribution = FALSE,
-      lm,
-      y ~ x
+      mod = lm,
+      formula = y ~ x
     )
     expect_vector(epe)
     expect_length(epe, 1)
