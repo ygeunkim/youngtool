@@ -10,6 +10,9 @@ compute_epe(
   testn,
   fit,
   randy,
+  mcname = "mc",
+  xname = "x",
+  yname = "y",
   error = c("squared", "absolute"),
   distribution = FALSE,
   mod,
@@ -27,6 +30,12 @@ compute_epe(
 \item{fit}{True model function with \code{x}-named argument.}
 
 \item{randy}{Random sample generator function for error term. By default, \link[stats]{rnorm}}
+
+\item{mcname}{column name of the MC sample. By default, \code{"mc"}.}
+
+\item{xname}{column name of the data. By default, \code{"x"}.}
+
+\item{yname}{column name of the response. By default, \code{"y"}.}
 
 \item{error}{Choice of loss function. See \code{\link{loss}}.}
 

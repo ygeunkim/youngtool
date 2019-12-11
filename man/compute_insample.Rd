@@ -9,7 +9,14 @@ compute_insample(
   ny,
   fit,
   rand,
+  mcname = "mc",
+  xname = "x",
+  yname = "y",
+  fitname = "fx",
+  pred_name = "pred",
+  insample_name = "y",
   error = c("squared", "absolute"),
+  distribution = FALSE,
   mod,
   formula,
   ...
@@ -24,7 +31,21 @@ compute_insample(
 
 \item{rand}{Random sample generator function for error term. By default, \link[stats]{rnorm}}
 
+\item{mcname}{column name of the MC sample. By default, \code{"mc"}.}
+
+\item{xname}{column name of the data. By default, \code{"x"}.}
+
+\item{yname}{column name of the response. By default, \code{"y"}.}
+
+\item{fitname}{column name of the true fit. By default, \code{"fx"}.}
+
+\item{pred_name}{column name of the predicted values. By default, \code{"pred"}.}
+
+\item{insample_name}{multiple column names when computing insample error}
+
 \item{error}{Choice of loss function. See \code{\link{loss}}.}
+
+\item{distribution}{return the error for each MC sample? \code{FALSE} by default. If \code{TRUE}, it gives the \code{data.table}.}
 
 \item{mod}{Model function.}
 

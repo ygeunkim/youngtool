@@ -10,7 +10,9 @@ test_that(
       5,
       function(x) {1 + 3 * x},
       rnorm,
+      "mc", "x", "y", "fx", "pred", "y",
       "squared",
+      FALSE,
       lm,
       y ~ x
     )

@@ -6,7 +6,14 @@
 #' @param ny the number of response at each x point
 #' @param fit True model function with \code{x}-named argument.
 #' @param rand Random sample generator function for error term. By default, \link[stats]{rnorm}
+#' @param mcname column name of the MC sample. By default, \code{"mc"}.
+#' @param xname column name of the data. By default, \code{"x"}.
+#' @param yname column name of the response. By default, \code{"y"}.
+#' @param fitname column name of the true fit. By default, \code{"fx"}.
+#' @param pred_name column name of the predicted values. By default, \code{"pred"}.
+#' @param insample_name multiple column names when computing insample error
 #' @param error Choice of loss function. See \code{\link{loss}}.
+#' @param distribution return the error for each MC sample? \code{FALSE} by default. If \code{TRUE}, it gives the \code{data.table}.
 #' @param mod Model function.
 #' @param formula an object of class \link[stats]{formula}.
 #' @param ... Additional arguments for \code{mod}. If you wand argument for \code{rand}, define one.
@@ -19,28 +26,43 @@
 #' Optimism is the difference between the insample error and the training error.
 #' @references Hastie, T., Tibshirani, R.,, Friedman, J. (2001). \emph{The Elements of Statistical Learning}. New York, NY, USA: Springer New York Inc..
 #' @export
-compute_insample <- function(data, ny, fit, rand, error = c("squared", "absolute"), mod, formula, ...) {
-  error = match.arg(error)
-  if (!("y" %in% names(data))) data <- gen_y(data, fit, rand, fit_col = FALSE)
-  cols <- paste0("y", 1:ny)
+compute_insample <- function(data, ny, fit, rand,
+                             mcname = "mc", xname = "x", yname = "y", fitname = "fx", pred_name = "pred", insample_name = "y",
+                             error = c("squared", "absolute"), distribution = FALSE, mod, formula, ...) {
+  error <- match.arg(error)
+  x_sym <- sym(xname)
+  y_sym <- sym(yname)
+  pred_sym <- sym(pred_name)
+  if (!(yname %in% names(data))) data <- gen_y(data, fit, rand, mcname, xname, yname, fitname, fit_col = FALSE)
+  cols <- paste0(insample_name, 1:ny)
   for (col in cols) {
     data[,
-         (col) := fit(x) + rand(.N)]
+         (col) := fit(eval(x_sym)) + rand(.N)]
   }
-  data <- pred_dt(data = data, mod = mod, formula = formula, ...)
-  data %>%
-    melt(id.vars = c("x", "y", "mc", "pred")) %>%
+  data <- pred_dt(data = data, mcname = mcname, mod = mod, formula = formula, pred_name = pred_name, ...)
+  data <-
+    data %>%
+    melt(id.vars = c(xname, yname, mcname, pred_name)) %>%
     .[,
       .(
-        training = loss(y, pred, error),
-        insample = loss(value, pred, error)
+        training = loss(eval(y_sym), eval(pred_sym), error),
+        insample = loss(value, eval(pred_sym), error)
       ),
-      by = mc] %>%
+      by = c(mcname, "variable")] %>%
     .[,
       optimism := insample - training] %>%
     .[,
       lapply(.SD, mean),
-      .SDcols = -"mc"]
+      by = mcname,
+      .SDcols = -"variable"]
+  if (distribution) {
+    data
+  } else {
+    data %>%
+      .[,
+        lapply(.SD, mean),
+        .SDcols = -mcname]
+  }
 }
 
 #' Generalization Error
@@ -52,6 +74,9 @@ compute_insample <- function(data, ny, fit, rand, error = c("squared", "absolute
 #' @param testn Test sample size
 #' @param fit True model function with \code{x}-named argument.
 #' @param randy Random sample generator function for error term. By default, \link[stats]{rnorm}
+#' @param mcname column name of the MC sample. By default, \code{"mc"}.
+#' @param xname column name of the data. By default, \code{"x"}.
+#' @param yname column name of the response. By default, \code{"y"}.
 #' @param error Choice of loss function. See \code{\link{loss}}.
 #' @param distribution return the error for each MC sample? \code{FALSE} by default. If \code{TRUE}, it gives the \code{data.table}.
 #' @param mod Model function.
@@ -63,27 +88,34 @@ compute_insample <- function(data, ny, fit, rand, error = c("squared", "absolute
 #' Given MC samples, compute test error using independent test set and average.
 #' @references Hastie, T., Tibshirani, R.,, Friedman, J. (2001). \emph{The Elements of Statistical Learning}. New York, NY, USA: Springer New York Inc..
 #' @export
-compute_epe <- function(data, randx, testn, fit, randy, error = c("squared", "absolute"), distribution = FALSE, mod, formula, ...) {
+compute_epe <- function(data, randx, testn, fit, randy,
+                        mcname = "mc", xname = "x", yname = "y",
+                        error = c("squared", "absolute"), distribution = FALSE, mod, formula, ...) {
   error <- match.arg(error)
+  x_sym <- sym(xname)
+  y_sym <- sym(yname)
+  test_set <- data.table()
   test_set <-
-    data.table(x = randx(n = testn)) %>%
+    test_set %>%
     .[,
-      y := fit(x) + randy(.N, ...)]
+      (xname) := randx(n = testn)] %>%
+    .[,
+      (yname) := fit(eval(x_sym)) + randy(.N, ...)]
   data <-
     data %>%
     .[,
-      y := fit(x) + randy(.N, ...),
-      by = mc] %>%
+      (yname) := fit(eval(x_sym)) + randy(.N, ...),
+      by = mcname] %>%
     .[,
-      .(pred = mod(y ~ x, data = .SD) %>%
+      .(pred = mod(formula, data = .SD) %>%
           predict(test_set)),
-      by = mc] %>%
+      by = mcname] %>%
     .[,
-      y := test_set[, y],
-      by = mc] %>%
+      (yname) := test_set[, eval(y_sym)],
+      by = mcname] %>%
     .[,
-      .(error = loss(y, pred)),
-      by = mc]
+      .(error = loss(eval(y_sym), pred)),
+      by = mcname]
   if (distribution) {
     data
   } else {

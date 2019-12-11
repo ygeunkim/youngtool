@@ -4,7 +4,7 @@
 \alias{mc_data}
 \title{Generate Monte Carlo Samples}
 \usage{
-mc_data(rand, N = 100, M = 1000, char = "s", ...)
+mc_data(rand, N = 100, M = 1000, mcname = "mc", xname = "x", char = "s", ...)
 }
 \arguments{
 \item{rand}{Random sample generator function with parameter n}
@@ -12,6 +12,10 @@ mc_data(rand, N = 100, M = 1000, char = "s", ...)
 \item{N}{Sample size in each MC sample}
 
 \item{M}{Number of MC samples}
+
+\item{mcname}{column name of the MC sample. By default, \code{"mc"}.}
+
+\item{xname}{column name of the data. By default, \code{"x"}.}
 
 \item{char}{Indicator for MC sample, "s" by default. Distinguished by suffix number.}
 
